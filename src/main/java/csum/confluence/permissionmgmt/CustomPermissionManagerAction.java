@@ -35,6 +35,7 @@ import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
+import com.atlassian.confluence.spaces.SpacesQuery;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
 import com.atlassian.plugin.webresource.WebResourceManager;
@@ -773,7 +774,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         if (GeneralUtil.isSuperUser(user)) {
             spaceList = getAllSpaces();
         } else {
-            spaceList = spaceDao.getPermittedSpacesForUser(user, permission);
+            //spaceList = spaceDao.getPermittedSpacesForUser(user, permission);
+            spaceList = spaceDao.getSpaces(SpacesQuery.newQuery().forUser(user).withPermission(permission).build());
         }
 
         if (spaceList != null) {
