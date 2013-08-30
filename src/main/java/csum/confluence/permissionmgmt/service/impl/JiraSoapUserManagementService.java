@@ -114,8 +114,8 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                             continue;
 
                         } else {
-                            addMembershipToJiraPassivelyAndTrackingErrors(context, jiraSoapService, token, ServiceConstants.CONFLUENCE_USERS_GROUP_NAME, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
-                            addMembershipToJiraPassivelyAndTrackingErrors(context, jiraSoapService, token, ServiceConstants.JIRA_USERS_GROUP_NAME, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
+                            addMembershipToJiraPassivelyAndTrackingErrors(jiraSoapService, token, ServiceConstants.CONFLUENCE_USERS_GROUP_NAME, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
+                            addMembershipToJiraPassivelyAndTrackingErrors(jiraSoapService, token, ServiceConstants.JIRA_USERS_GROUP_NAME, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
                         }
                     }
 
@@ -124,7 +124,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                         //Associate this user to all selected user-groups
                         for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                             String groupName = (String) iterator.next();
-                            addMembershipToJiraPassivelyAndTrackingErrors(context, jiraSoapService, token, groupName, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
+                            addMembershipToJiraPassivelyAndTrackingErrors(jiraSoapService, token, groupName, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
                         }
                     }
                 }
@@ -184,7 +184,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         return vUser;
     }
 
-    private void addMembershipToJiraPassivelyAndTrackingErrors(ServiceContext context, JiraSoapService jiraSoapService, String token, String groupName, RemoteUser remoteUser, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems) {
+    private void addMembershipToJiraPassivelyAndTrackingErrors(JiraSoapService jiraSoapService, String token, String groupName, RemoteUser remoteUser, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems) {
         if (groupsNotFoundMap.get(groupName) == null && remoteUser != null) {
             try {
                 RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
@@ -211,11 +211,9 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 }
 
                 if (remoteGroup != null) {
-                    if (!isMemberOf(remoteUser.getName(), groupName, context)) {
+                    if (!isMemberOf(remoteUser.getName(), groupName)) {
                         if ("jira-users".equals(groupName)) {
                             log.debug("We won't add " + remoteUser.getName() + " to group jira-users (SUSR-102).");
-                        } else if (!isAllowedToManageGroup(context, groupName)) {
-                            log.debug("We will not add " + remoteUser.getName() + " to group because not allowed to administer.");
                         } else {
                             log.debug("Adding " + remoteUser.getName() + " to Jira group " + groupName);
                             jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
@@ -255,7 +253,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 if (remoteUser != null) {
                     for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                         String groupName = (String) iterator.next();
-                        removeMembershipFromJiraPassivelyAndTrackingErrors(context, jiraSoapService, token, groupName, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipRemovalProblems);
+                        removeMembershipFromJiraPassivelyAndTrackingErrors(jiraSoapService, token, groupName, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipRemovalProblems);
                     }
                 } else {
                     usersNotFound.add(userid);
@@ -285,7 +283,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         }
     }
 
-    private void removeMembershipFromJiraPassivelyAndTrackingErrors(ServiceContext context, JiraSoapService jiraSoapService, String token, String groupName, RemoteUser remoteUser, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipRemovalProblems) {
+    private void removeMembershipFromJiraPassivelyAndTrackingErrors(JiraSoapService jiraSoapService, String token, String groupName, RemoteUser remoteUser, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipRemovalProblems) {
         if (groupsNotFoundMap.get(groupName) == null && remoteUser != null) {
             try {
                 RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
@@ -312,11 +310,9 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 }
 
                 if (remoteGroup != null) {
-                    if (isMemberOf(remoteUser.getName(), groupName, context)) {
+                    if (isMemberOf(remoteUser.getName(), groupName)) {
                         if ("jira-users".equals(groupName)) {
                             log.debug("We will not remove " + remoteUser.getName() + " from group jira-users (SUSR-102).");
-                        } else if (!isAllowedToManageGroup(context, groupName)) {
-                            log.debug("We will not remove " + remoteUser.getName() + " from group because not allowed to administer.");
                         } else {
                             log.debug("Removing " + remoteUser.getName() + " from Jira group " + groupName);
                             jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
