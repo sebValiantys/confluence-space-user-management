@@ -4,6 +4,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+    <parent>
+        <groupId>com.atlassian.confluence.plugin.base</groupId>
+        <artifactId>confluence-plugin-base</artifactId>
+        <version>22</version>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>raju.kadam.confluence</groupId>
     <artifactId>permissionmgmt</artifactId>
@@ -11,15 +17,19 @@
 
     <name>Custom Space User Management Plugin</name>
     <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
-    <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces</description>
+    <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces
+    </description>
     <packaging>atlassian-plugin</packaging>
 
     <properties>
-        <confluence.version>3.5</confluence.version>
-        <confluence.data.version>3.1</confluence.data.version>
-        <!-- find this in pom.xml in version dir: https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
-        <crowd.version>2.2.1</crowd.version>
-        <crowd.embedded.version>1.1</crowd.embedded.version>
+        <confluence.version>5.2.3</confluence.version>
+        <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
+        <!-- Confluence version -->
+        <atlassian.product.version>2.9</atlassian.product.version>
+        <!-- Confluence plugin functional test library version -->
+        <atlassian.product.test-lib.version>1.4.1</atlassian.product.test-lib.version>
+        <!-- Confluence data version -->
+        <atlassian.product.data.version>2.9</atlassian.product.data.version>
     </properties>
 
     <issueManagement>
@@ -32,38 +42,38 @@
         <developerConnection>scm:svn:https://studio.plugins.atlassian.com/svn/SUSR/trunk</developerConnection>
         <url>https://studio.plugins.atlassian.com/source/browse/SUSR/trunk</url>
     </scm>
-    
+
     <licenses>
         <license>
             <name>BSD-Style License</name>
             <distribution>manual</distribution>
             <comments>
- Copyright (c) 2007-2011, Custom Space User Management Plugin Development Team
- All rights reserved.
+                Copyright (c) 2007-2013, Custom Space User Management Plugin Development Team
+                All rights reserved.
 
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
+                Redistribution and use in source and binary forms, with or without
+                modification, are permitted provided that the following conditions are met:
 
-     * Redistributions of source code must retain the above copyright notice,
-       this list of conditions and the following disclaimer.
-     * Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-     * Neither the name of the Custom Space User Management Plugin Development Team
-       nor the names of its contributors may be used to endorse or promote
-       products derived from this software without specific prior written permission.
+                * Redistributions of source code must retain the above copyright notice,
+                this list of conditions and the following disclaimer.
+                * Redistributions in binary form must reproduce the above copyright
+                notice, this list of conditions and the following disclaimer in the
+                documentation and/or other materials provided with the distribution.
+                * Neither the name of the Custom Space User Management Plugin Development Team
+                nor the names of its contributors may be used to endorse or promote
+                products derived from this software without specific prior written permission.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
+                THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+                AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+                IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+                ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+                LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+                CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+                SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+                INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+                CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+                ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+                POSSIBILITY OF SUCH DAMAGE.
             </comments>
         </license>
     </licenses>
@@ -81,10 +91,10 @@
         <developer>
             <name>Gary S. Weaver</name>
             <email>garysweaver@gmail.com</email>
-            <organization>Duke University</organization>
-            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
             <roles>
-                <role>Developer - v2 Lead Developer: User and Group Management, Config, Jira SOAP Service Integration, Confluence Compatibility Fixes, etc.</role>
+                <role>Developer - v2 Lead Developer: User and Group Management, Config, Jira SOAP Service Integration,
+                    Confluence Compatibility Fixes, etc.
+                </role>
             </roles>
             <timezone>-4</timezone>
         </developer>
@@ -115,11 +125,11 @@
                 <role>Developer - v2 Bug Fixes for Key Names in i18n Properties, Fix for Delete Group in IE</role>
             </roles>
         </developer>
-        
+
     </developers>
-    
+
     <contributors>
-      
+
         <contributor>
             <name>Christian Nesemann</name>
             <organization>Bünting IT GmbH</organization>
@@ -128,7 +138,7 @@
                 <role>Provided initial German translation</role>
             </roles>
         </contributor>
-        
+
         <contributor>
             <name>Tom Saathoff</name>
             <organization>Bünting IT GmbH</organization>
@@ -137,7 +147,7 @@
                 <role>Provided initial German translation</role>
             </roles>
         </contributor>
-        
+
     </contributors>
 
     <organization>
@@ -146,117 +156,19 @@
     </organization>
 
     <dependencies>
-        <!-- scope provided means it is only used for compilation and not included in jar -->
         <dependency>
             <groupId>com.atlassian.confluence</groupId>
             <artifactId>confluence</artifactId>
             <version>${confluence.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.atlassian.crowd</groupId>
-            <artifactId>embedded-crowd-api</artifactId>
-            <version>${crowd.version}</version>
-        </dependency>
-
-        <!--
-        <dependency>
-            <groupId>com.atlassian.crowd</groupId>
-            <artifactId>crowd-integration-api</artifactId>
-            <version>${crowd.version}</version>
-        </dependency>
         
-        <dependency>
-            <groupId>com.atlassian.crowd</groupId>
-            <artifactId>crowd-integration-seraph22</artifactId>
-            <version>${crowd.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.atlassian.crowd</groupId>
-            <artifactId>embedded-crowd-spi</artifactId>
-            <version>${crowd.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.atlassian.crowd</groupId>
-            <artifactId>crowd-password-encoders</artifactId>
-            <version>${crowd.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.atlassian.crowd</groupId>
-            <artifactId>embedded-crowd-core</artifactId>
-            <version>${crowd.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.atlassian.crowd</groupId>
-            <artifactId>crowd-ldap</artifactId>
-            <version>${crowd.version}</version>
-        </dependency>
-        -->
-        
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-            <version>2.5.6</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <!-- for CONF-9035 hack in CustomPermissionManagerAction -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.3</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>com.dolby.confluence.net</groupId>
             <artifactId>ldaputil</artifactId>
             <version>1.0.11</version>
-        </dependency> 
-
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-            <exclusions>
-                <!-- Bamboo build complains about log4j not being in there... not sure why
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                -->
-                <exclusion>
-                    <groupId>logkit</groupId>
-                    <artifactId>logkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>avalon-framework</groupId>
-                    <artifactId>avalon-framework</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
-        <!-- external dependencies -->
-        <!-- commented for now because of conflicts during deployment: loader constraints violated when linking org/apache/log4j/Category class
-        <dependency>
-            <groupId>com.atlassian.paddle</groupId>
-            <artifactId>atlassian-paddle</artifactId>
-            <version>2.4</version>
-            <scope>compile</scope>
-        </dependency>
-        -->
-
-        <!-- only needed for testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -265,8 +177,6 @@
         </dependency>
     </dependencies>
 
-
-    <!--  for full build use: mvn clean site install -->
     <!--  depgraph:depgraph, if uncommented below will regenerate target/site/images/csum-depgraph.png -->
     <build>
         <!-- This will automatically put POM settings into atlassian-plugin.xml when building.  -->
@@ -299,6 +209,7 @@
         </testResources>
 
         <plugins>
+            <!--
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-confluence-plugin</artifactId>
@@ -309,6 +220,7 @@
                     <productDataVersion>${confluence.data.version}</productDataVersion>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -337,7 +249,7 @@
                 </executions>
             </plugin>
 
-            <!-- JAVADOC - it is useful, and its free... just make sure that all code is self-documenting ;)  -->
+            <!--
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
@@ -346,8 +258,7 @@
                     </stylesheetfile>
                 </configuration>
             </plugin>
-
-            <!--  NOTE: requires at least Maven 2.0.6 -->
+            -->
             <!--  NOTE: requires graphviz installed http://graphviz.org/ -->
             <!-- UNCOMMENT TO GENERATE DEPENDENCY GRAPH, BUT YOU WILL NEED TO ADD A REPOSITORY TO THE LIST THAT CONTAINS THIS PLUGIN... HOPEFULLY THEY FIX THIS SOON.
 			<plugin>
@@ -378,8 +289,9 @@
         </plugins>
     </build>
 
+    <!--
     <reporting>
-        <plugins>
+        <plugins>    
             <plugin>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
@@ -419,11 +331,52 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
-            </plugin>
+            </plugin>        
         </plugins>
     </reporting>
+    -->
 
     <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Real Public</id>
+            <url>https://maven.atlassian.com/content/repositories/public/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </repository>
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -432,7 +385,6 @@
             <name>Central Maven 2 Repository</name>
             <url>http://repo1.maven.org/maven2</url>
         </repository>
-
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -443,51 +395,6 @@
             <id>Codehaus Snapshots</id>
             <url>http://snapshots.repository.codehaus.org</url>
         </repository>
-        
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian Public</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
-        </repository>
-    
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>Atlassian Public Snaphots</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
-        </repository>
-        
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian 3rd-party Repository</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
-        </repository>
-        
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>JBoss</id>
-            <url>http://repository.jboss.org/maven2/</url>
-        </repository>
-        
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -498,35 +405,29 @@
             <id>TWData</id>
             <url>https://twdata-m2-repository.googlecode.com/svn/</url>
         </repository>
-        
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
-            <id>codehaus.org</id>
-            <name>CodeHaus Plugin Snapshots</name>
-            <url>http://repository.codehaus.org</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Real Public</id>
+            <url>https://maven.atlassian.com/content/repositories/public/</url>
         </pluginRepository>
-
-        <!-- depgraph plugin -->
-        <!-- UNCOMMENT TO GENERATE DEPENDENCY GRAPH, BUT YOU WILL NEED TO ADD A REPOSITORY TO THE LIST THAT CONTAINS THIS PLUGIN... HOPEFULLY THEY FIX THIS SOON.
-                        <pluginRepository>
-                  <id>elca-services</id>
-                  <url>http://el4.elca-services.ch/el4j/maven2repository</url>
-                  <releases>
-                   <enabled>true</enabled>
-                  </releases>
-                          <snapshots>
-                           <enabled>true</enabled>
-                          </snapshots>
-                </pluginRepository>
-        -->
         <pluginRepository>
             <snapshots>
                 <enabled>false</enabled>
@@ -537,7 +438,6 @@
             <id>Atlassian Public</id>
             <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
         </pluginRepository>
-    
         <pluginRepository>
             <snapshots>
                 <enabled>true</enabled>
@@ -548,7 +448,6 @@
             <id>Atlassian Public Snaphots</id>
             <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
         </pluginRepository>
-        
         <pluginRepository>
             <snapshots>
                 <enabled>false</enabled>
@@ -559,16 +458,35 @@
             <id>Atlassian 3rd-party Repository</id>
             <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
         </pluginRepository>
-        
         <pluginRepository>
             <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
                 <enabled>false</enabled>
+            </releases>
+            <id>Codehaus Snapshots</id>
+            <url>http://snapshots.repository.codehaus.org</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
             </releases>
-            <id>JBoss</id>
-            <url>http://repository.jboss.org/maven2/</url>
+            <id>TWData</id>
+            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
         </pluginRepository>
 
     </pluginRepositories>
