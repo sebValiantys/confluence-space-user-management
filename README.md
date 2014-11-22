@@ -17,6 +17,14 @@ Using this plugin Space Administrators can:
 
 PLEASE NOTE: CSUM can only be used to manage users and groups in a read-write repository via the Confluence API. If you are using a read-only LDAP repository or similar as your primary repository, even though it supports using LDAP to validate usernames as a secondary repository, it will not be able to manage users/groups if the access to that repository via the Confluence API is read-only.
 
+### How It Works
+
+CSUM uses Atlassian APIs to do everything related to the data it creates/reads/updates/deletes for user and group permissions, so in-theory it should work as long as Confluence is configured with a user/group repository it allows to be manageable via the API. So, the CSUM add-on itself does not manage anything in the schema directly. Instead it uses an Atlassian API to list users with SpacePermission.VIEWSPACE_PERMISSION, excludes the group named "confluence-administrators", and then filters the manageable groups via a group name pattern which can include the space key. That group name pattern is definable in the add-on configuration by the Confluence administrator. Authorization for actions the space administrator performs via CSUM is enforced by built-in mechanisms in Confluence.
+
+If you must use delegation to Jira for Confluence user/group administration, it is supported via integration with its SOAP API (instead of using the Atlassian Java APIs). In the past, this has been problematic because of time delays between when changes show up in Confluence via the Atlassian Java APIs that CSUM uses. So, if you run into that and you need CSUM, we suggest finding an alternative option for your user/group repository.
+
+We use Atlassian's paging APIs and have to cache some data in the CSUM plugin's session. Without this caching there can be significant delays with large numbers of users. A refresh link in the page of the plugin (not a browser refresh) is available to refresh server session cache, or the session can be terminated via logout or maybe by closing the browser and re-opening (if the browser closes session on close). That is really only needed if two space administrators are both administering groups at the same time, or if there are delays between changes made and when those changes come back when we ask the APIs again for the revised groups/users.
+
 ### Installation
 
 This plugin can be downloaded and installed within [Atlassian Confluence][atlassian_confluence]. Newer releases are hosted with [Atlassian Marketplace][atlassian_marketplace]. All releases are stored in the releases branch of this repository, as a backup.
