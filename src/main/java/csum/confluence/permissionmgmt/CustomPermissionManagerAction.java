@@ -30,6 +30,8 @@
 package csum.confluence.permissionmgmt;
 
 import bucket.core.actions.PagerPaginationSupport;
+import com.atlassian.confluence.internal.spaces.SpacesQueryWithPermissionQueryBuilder;
+import com.atlassian.confluence.plugin.webresource.ConfluenceWebResourceService;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.confluence.spaces.Space;
@@ -38,7 +40,6 @@ import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
 import com.atlassian.confluence.spaces.SpacesQuery;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
-import com.atlassian.plugin.webresource.WebResourceManager;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
@@ -90,7 +91,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private String bulkEdit;
     private SettingsManager settingsManager;
     private String pagerAction;
-    private WebResourceManager webResourceManager;
+    private ConfluenceWebResourceService webResourceService;
 
     public static final String REDIRECT_PARAMNAME = "redirect";
     public static final String ADMIN_ACTION_PARAMNAME = "adminAction";
@@ -110,8 +111,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         log.debug("CustomPermissionManagerAction instance created");
     }
 
-    public void setWebResourceManager(WebResourceManager webResourceManager) {
-        this.webResourceManager = webResourceManager;
+    public void setWebResourceService(ConfluenceWebResourceService webResourceService) {
+        this.webResourceService = webResourceService;
     }
 
     public boolean isConfluenceVersionEqualToOrAbove(String version) {
@@ -267,7 +268,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         log.debug("groups=" + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()));
         context.setSpecifiedUsers(getUrlDecodedCleanedTrimmedParameterValueList(paramMap, USERS_PARAMNAME));
         log.debug("users=" + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()));
-        context.setLoggedInUser(getRemoteUser().getName());
+        context.setLoggedInUser(this.getAuthenticatedUser().getName());
         log.debug("loggedInUser=" + context.getLoggedInUser());
         context.setKey(getKey());
         log.debug("key=" + context.getKey());
@@ -584,7 +585,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         String spaceKey = getKey();
         if (spaceKey != null && spaceKey.startsWith("~")) {
             if (!isPersonalSpaceAdminAllowed()) {
-                log.info("Refused to allow " + getRemoteUser().getName() + " to administer users/groups in personal space " + spaceKey);
+                log.info("Refused to allow " + this.getAuthenticatedUser().getName() + " to administer users/groups in personal space " + spaceKey);
                 isNotAllowed = true;
             }
         } else {
@@ -606,7 +607,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             return ERROR;
         }
 
-        if (getRemoteUser() == null) {
+        if (this.getAuthenticatedUser() == null) {
             log.warn("RemoteUser was null");
             List resultList = new ArrayList();
             resultList.add(getText("csum.display.alert.invaliduser"));
@@ -614,7 +615,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             return ERROR;
         }
 
-        CacheUtil.setRemoteUser(getRemoteUser());
+        CacheUtil.setRemoteUser(this.getAuthenticatedUser());
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
@@ -754,18 +755,18 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public boolean isPermitted() {
-        if (GeneralUtil.isSuperUser(getRemoteUser())) {
+        if (GeneralUtil.isSuperUser(this.getAuthenticatedUser())) {
             return true;
         }
 
-        return spacePermissionManager.hasPermission(getPermissionTypes(), getSpace(), getRemoteUser());
+        return spacePermissionManager.hasAllPermissions(getPermissionTypes(), getSpace(), this.getAuthenticatedUser());
     }
 
     /*
      * Get List of all Spaces to which logged in user is Space Administrator
      */
     public List getSpacesAsSpaceAdminForUser() {
-        return getSpacesAssociatedToUserForGivenPermission(getRemoteUser(), SpacePermission.ADMINISTER_SPACE_PERMISSION);
+        return getSpacesAssociatedToUserForGivenPermission(this.getAuthenticatedUser(), SpacePermission.ADMINISTER_SPACE_PERMISSION);
     }
 
     public List getSpacesAssociatedToUserForGivenPermission(User user, String permission) {
@@ -775,7 +776,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             spaceList = getAllSpaces();
         } else {
             //spaceList = spaceDao.getPermittedSpacesForUser(user, permission);
-            spaceList = spaceDao.getSpaces(SpacesQuery.newQuery().forUser(user).withPermission(permission).build());
+            SpacesQuery spaceQuery = SpacesQuery.newQuery().forUser(user).withPermission(permission).build();
+            SpacesQueryWithPermissionQueryBuilder spaceQueryBuilder = SpacesQueryWithPermissionQueryBuilder.spacesQueryWithoutPermissionCheck(spaceQuery);
+            spaceList = spaceDao.getSpaces(spaceQueryBuilder);
         }
 
         if (spaceList != null) {
