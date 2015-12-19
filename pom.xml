@@ -13,7 +13,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>raju.kadam.confluence</groupId>
     <artifactId>permissionmgmt</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.1-SNAPSHOT</version>
 
     <name>Custom Space User Management Plugin</name>
     <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
@@ -22,7 +22,7 @@
     <packaging>atlassian-plugin</packaging>
 
     <properties>
-        <confluence.version>5.2.3</confluence.version>
+        <confluence.version>5.9.2</confluence.version>
         <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
         <!-- Confluence version -->
         <atlassian.product.version>2.9</atlassian.product.version>
@@ -37,6 +37,13 @@
         <url>http://developer.atlassian.com/jira/browse/SUSR</url>
     </issueManagement>
 
+
+    <!-- If code if officially hosted on github, this section could be updated-->
+    <!--<scm>-->
+        <!--<connection>https://github.com/sillycat/confluence-space-user-management.git</connection>-->
+        <!--<developerConnection>https://github.com/sillycat/confluence-space-user-management.git</developerConnection>-->
+        <!--<url>https://github.com/sillycat/confluence-space-user-management</url>-->
+    <!--</scm>-->
     <scm>
         <connection>scm:svn:http://studio.plugins.atlassian.com/svn/SUSR/trunk</connection>
         <developerConnection>scm:svn:https://studio.plugins.atlassian.com/svn/SUSR/trunk</developerConnection>
