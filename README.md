@@ -111,8 +111,7 @@ To add this plugin into the Space Admin menu of the Builder Theme use:
 * If a user is put into a group, and permissions are given to the group to allow that group to administer the space, and that group is manageable via space admin, then if the user removes the group that gives them rights to manage the group, the user will get a "you can't do that" screen after the operation has completed. This is expected behavior, but maybe not intuitive. It is not a good idea to restrict users from being able to do this, because there is no easy way to determine that the user will definitely lose access to manage if he/she were to delete the group.
 * LDAP in the configuration page of the plugin is there so that it can create users in either Confluence or Jira (depending on the "user manager" you choose in the plugin config) if they don't already exist when you try to add them to a group. It basically uses an LDAP lookup to get the email and full name of the user as reported by LDAP (with configurable settings for which LDAP attribute names these two should come from). This autoprovisioning of users as they are added to space groups using LDAP is also helpful if you are using LDAP for passwords auth only, although it isn't necessary. The point of confusion here is that if you have configured Confluence to use LDAP as the source of all users then you may not need to configure LDAP within the plugin (it won't hurt anything to have it though).
 * Rajendra tested the CSUM plugin with Jira and the only issue appears to be that Confluence itself takes a little while to get changes to Jira groups in his environment. That being said we are not actively supporting CSUM integration with Jira.
-* 1.x version is no longer actively supported. If you are using Confluence 2.3 or higher, please try upgrading to 2.x of the plugin.
-* CSUM v2.0.x requires Java 1.5 or later. CSUM v2.1+ requires Java 1.6 or later. Dependencies of the plugin require these versions.
+* Older versions of the plugin are not supported.
 
 ### Troubleshooting
 
@@ -154,32 +153,17 @@ Get Involved
 * Igor Minar
 * Christian Nesemann
 * Tom Saathoff
+* [@sebValiantys](https://github.com/sebValiantys)
 
 Thanks also to everyone else that has contributed to, tested, and/or used CSUM!
 
-### Release History
+### Version History
 
-* 2.2.1.1 (#33) - 12 Dec 2012 - Stable
-* 2.2.1 (#23) - 29 Jun 2011 - Stable
-* 2.1.1 (#22) - 07 Feb 2011 - Stable
-* 2.1.0 (#21) - 06 Feb 2011 - Stable
-* 2.0.6 (#20) - 24 Oct 2010 - Stable
-* 2.0.5 (#19) - 17 Aug 2009 - Stable
-* 2.0.4 (#18) - 03 Jun 2009 - Stable
-* 2.0.3 (#17) - 12 Apr 2009 - Stable
-* 2.0.2 (#16) - 09 Jul 2008 - Stable
-* 2.0.1 (#15) - 09 Jul 2008 - Stable
-* 2.0 (#14) - 17 Feb 2008 - Stable
-* 2.0-rc-3 (#13) - 17 Oct 2007 - Not Stable
-* 2.0-rc-2 (#12) - 09 Oct 2007 - Not Stable
-* 2.0-rc-1 (#11) - 01 Oct 2007 - Not Stable
-* 2.0-beta-2 (#10 - 17 Sep 2007 - Not Stable
-* 2.0-beta-1 (#9) - 05 Sep 2007 - Not Stable
-* 1.1 (#3) - 03 Oct 2006 - Stable
+Release history is available at [Atlassian Marketplace](https://marketplace.atlassian.com/plugins/raju.kadam.confluence.permissionmgmt/versions).
 
 ### License
 
-Copyright (c) 2007-2013, Custom Space User Management Plugin Development Team, released under a [BSD-style License][lic].
+Copyright (c) 2007-2015, Custom Space User Management Plugin Development Team, released under a [BSD-style License][lic].
 
 [atlassian_confluence]: http://www.atlassian.com/software/confluence/_
 [atlassian_marketplace]: https://marketplace.atlassian.com/plugins/raju.kadam.confluence.permissionmgmt
