@@ -67,7 +67,7 @@ Past releases were done in Atlassian's hosted repositories in subversion, so we 
     git add pom.xml
     git commit -m "updated version to 1.2.3"
 
-6) Build again, then add the release and tag it:
+6) Build again, then add the release and tag it. This requires the [Atlassian SDK](https://developer.atlassian.com/display/docs/set+up+the+atlassian+plugin+sdk+and+build+a+project) to have been installed and setup (don't just run mvn):
 
     atlas-mvn -Dmaven.test.skip=true clean install
 	cp target/(jar name) releases

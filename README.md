@@ -153,7 +153,7 @@ Get Involved
 * Igor Minar
 * Christian Nesemann
 * Tom Saathoff
-* [@sebValiantys](https://github.com/sebValiantys)
+* Sébastien Delcoigne
 
 Thanks also to everyone else that has contributed to, tested, and/or used CSUM!
 
